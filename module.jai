@@ -1,3 +1,9 @@
+// @file:   module.jai
+// @author: jak2 <jak2@clover-work.shop>
+//
+// from the poet to the lover, the support of clover
+//
+
 get_game_user_data_path :: (game_title: string) -> bool, string {
     c_string_path := getenv(to_c_string(user_path));
 
