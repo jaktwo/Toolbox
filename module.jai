@@ -61,6 +61,10 @@ generate_enum_entries_from_filenames :: (files_list: []string) -> string {
     return builder_to_string(*enum_as_string_string_builder);
 }
 
+enum_member_count :: (enumerator: #type enum) -> int {
+	return enum_values_as_s64(enumerator).count.(int);
+}
+
 #scope_module
 
 #load "platform/platform.jai";
