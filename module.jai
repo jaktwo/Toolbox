@@ -65,6 +65,24 @@ enum_member_count :: (enumerator: Type) -> int {
 	return enum_values_as_s64(enumerator).count.(int);
 }
 
+// based on the implementation of the Language beta Discord user "bloeys"
+default_array_value :: (value: $T, count: int) -> string {
+    if count <= 0 return ".[];";
+    
+    info := type_info(type_of(value));
+    
+    enum_dot: string;
+    if info.type == .ENUM then enum_dot = ".";
+    
+    builder: String_Builder;
+    
+    print(*builder, ".[%1%", enum_dot, value);
+    for 1..count - 1 print(*builder, ",%1%", enum_dot, value);
+    print(*builder, "];");
+
+    return builder_to_string(*builder);
+}
+
 #scope_module
 
 #load "platform/platform.jai";
