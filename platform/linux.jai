@@ -7,3 +7,7 @@
 libc :: #library,system "libc";
 
 user_path := "HOME";
+
+// @ note <backspc3>: We need this symbol for linux too, since it isnt
+//                    implemented yet, we use a placeholder function.
+free_console :: () -> bool { return true; }

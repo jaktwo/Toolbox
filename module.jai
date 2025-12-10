@@ -84,6 +84,26 @@ default_array_value :: (value: $T, count: int) -> string {
     return builder_to_string(*builder);
 }
 
+pack_16bit_integers_to_u32 :: ( lower : $T, upper : $V ) -> u32 #expand {
+    #assert(type_info(T) == type_info(u16) || type_info(T) == type_info(s16));
+    #assert(type_info(V) == type_info(u16) || type_info(V) == type_info(s16));
+
+    as_u16_lower := ((*lower).(*u16)).*;
+    as_u16_upper := ((*upper).(*u16)).*;
+
+    return ( 
+        // Autocast to u16, then to u32 and pack into a single u32.
+        (as_u16_lower).(u32) | ( (as_u16_upper).(u32) << 16 ));
+}
+
+MASK    : u32 : 0xFFFF;
+SIXTEEN : u32 : 16; 
+
+unpack_lower_s16_from_u32 :: ( packed : u32 ) -> s16 #expand { return ((packed << 16) >> 16).(s16);  }
+unpack_lower_u16_from_u32 :: ( packed : u32 ) -> u16 #expand { return (packed & 0xFFFF).(u16); }
+unpack_upper_s16_from_u32 :: ( packed : u32 ) -> s16 #expand { return (packed  >> SIXTEEN).(s16); }
+unpack_upper_u16_from_u32 :: ( packed : u32 ) -> s16 #expand { return ((packed >> SIXTEEN) & u32.{0xffff}).(u16); }
+
 #scope_module
 
 #load "platform/platform.jai";
