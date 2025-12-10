@@ -46,7 +46,7 @@ read_entire_files_in_list_as_strings :: (files_list: []string) -> []string {
     return loaded_files;
 }
 
-generate_enum_entries_from_filenames :: (files_list: []string) -> string {
+generate_enum_entries_from_filenames :: (files_list: []string, generate_indices: bool=true) -> string {
     enum_as_string_string_builder: String_Builder;
 
     for files_list {
@@ -55,7 +55,8 @@ generate_enum_entries_from_filenames :: (files_list: []string) -> string {
 		
 		for current_file_name_without_path_and_extension append(*enum_as_string_string_builder, to_upper(it));
 		
-		append(*enum_as_string_string_builder, tprint(" :: %;\n", it_index));
+		if generate_indices then append(*enum_as_string_string_builder, tprint(" :: %", it_index));
+        append(*enum_as_string_string_builder, ";\n");
     }
 
     return builder_to_string(*enum_as_string_string_builder);
